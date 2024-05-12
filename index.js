@@ -1,10 +1,14 @@
-function coinChange(coins, amount) {
-  const dp = new Array(amount + 1).fill(amount + 1);
-  dp[0] = 0;
-  for (const coin of coins) {
-    for (let i = coin; i <= amount; i++) {
-      dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+function connect(root) {
+  if (!root) return root;
+  let levelStart = root;
+  while (levelStart) {
+    let curr = levelStart;
+    while (curr) {
+      if (curr.left) curr.left.next = curr.right;
+      if (curr.right && curr.next) curr.right.next = curr.next.left;
+      curr = curr.next;
     }
+    levelStart = levelStart.left;
   }
-  return dp[amount] > amount ? -1 : dp[amount];
+  return root;
 }
