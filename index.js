@@ -1,14 +1,17 @@
-function connect(root) {
-  if (!root) return root;
-  let levelStart = root;
-  while (levelStart) {
-    let curr = levelStart;
-    while (curr) {
-      if (curr.left) curr.left.next = curr.right;
-      if (curr.right && curr.next) curr.right.next = curr.next.left;
-      curr = curr.next;
+function allPathsSourceTarget(graph) {
+  const result = [];
+  const target = graph.length - 1;
+  dfs(graph, 0, [0]);
+  function dfs(graph, node, path) {
+    if (node === target) {
+      result.push([...path]);
+      return;
     }
-    levelStart = levelStart.left;
+    for (const neighbor of graph[node]) {
+      path.push(neighbor);
+      dfs(graph, neighbor, path);
+      path.pop();
+    }
   }
-  return root;
+  return result;
 }
